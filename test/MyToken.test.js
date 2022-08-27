@@ -1,3 +1,5 @@
+require('dotenv').config({ path: '../.env' });
+
 const Token = artifacts.require('MyToken');
 
 var chai = require('chai');
@@ -14,7 +16,7 @@ contract('Token Test', async (accounts) => {
   const [deployerAccount, recepient, anotherAccount] = accounts;
 
   beforeEach(async () => {
-    this.myToken = await Token.new(1000000);
+    this.myToken = await Token.new(process.env.INITIAL_TOKEN);
   });
 
   it('all tokens should be in my account', async () => {
