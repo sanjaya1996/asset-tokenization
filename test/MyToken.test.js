@@ -28,6 +28,18 @@ contract('Token Test', async (accounts) => {
     ).to.eventually.be.a.bignumber.equal(totalSupply);
   });
 
+  it('is not possible to send more tokens than available in total', async () => {
+    let instance = await Token.deployed();
+    let balanceOfDeployer = await instance.balanceOf(deployerAccount);
+
+    await expect(instance.transfer(recepient, new BN(balanceOfDeployer + 1))).to
+      .eventually.be.rejected;
+
+    return expect(
+      instance.balanceOf(deployerAccount)
+    ).to.eventually.be.a.bignumber.equal(balanceOfDeployer);
+  });
+
   it('is possible to send tokens between accounts', async () => {
     const sendTokens = 1;
     let instance = await Token.deployed();
@@ -46,17 +58,5 @@ contract('Token Test', async (accounts) => {
     expect(instance.balanceOf(recepient)).to.eventually.be.a.bignumber.equal(
       new BN(sendTokens)
     );
-  });
-
-  it('is not possible to send more tokens than available in total', async () => {
-    let instance = await Token.deployed();
-    let balanceOfDeployer = await instance.balanceOf(deployerAccount);
-
-    expect(instance.transfer(recepient, new BN(balanceOfDeployer + 1))).to
-      .eventually.be.rejected;
-
-    expect(
-      instance.balanceOf(deployerAccount)
-    ).to.eventually.be.a.bignumber.equal(balanceOfDeployer);
   });
 });
