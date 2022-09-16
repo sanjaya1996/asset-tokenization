@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import MyToken from './contracts/MyToken.json';
-import MyTokenSale from './contracts/MyTokenSale.json';
-import Kyc from './contracts/KycContract.json';
+import MyToken from './build/MyToken.json';
+import MyTokenSale from './build/MyTokenSale.json';
+import Kyc from './build/KycContract.json';
 import getWeb3 from './getWeb3';
 
 import './App.css';
@@ -25,6 +25,8 @@ class App extends Component {
         MyToken.networks[this.networkId] &&
           MyToken.networks[this.networkId].address
       );
+
+      console.log('Token address: ', MyToken.networks[this.networkId].address);
 
       this.tokenSaleInstance = new this.web3.eth.Contract(
         MyTokenSale.abi,
